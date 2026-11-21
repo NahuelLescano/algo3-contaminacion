@@ -1,0 +1,73 @@
+@startuml
+
+class Salamandra {
+    - {static} CAPACIDAD_MAX = 10
+    - {static} CONTAMINACION_MAX_CO2 = 500
+
+    + rellenarCon(combustible: Combustible): boolean
+    + quemar(): Combustion
+}
+
+class Combustion {
+   + Combustion(combustibles: List<Combustible>)
+   + calcularCosto(): double
+   + calcularContaminacion(): double
+}
+
+interface Combustible {
+    + calcularCostoCombustion(): double
+    + calcularGradoContaminacion(): double
+    + obtenerKilos(): double
+}
+
+class Quebracho {
+    - {static} FACTOR_CONTAMINACION = 5
+    - {static} PRECIO = 1000
+    - kilos: double
+
+    + Quebracho(kilos: double)
+    + calcularCostoCombustion(): double
+    + calcularGradoContaminacion(): double
+    + obtenerKilos(): double
+}
+
+class Pino {
+    - {static} FACTOR_CONTAMINACION = 150
+    - {static} PRECIO = 500
+    - kilos: double
+
+    + Pino(kilos: double)
+    + calcularCostoCombustion(): double
+    + calcularGradoContaminacion(): double
+    + obtenerKilos(): double
+}
+
+class Resina {
+    - {static} FACTOR_CONTAMINACION = 5
+    - {static} PRECIO = 250
+    - kilos: double
+
+    + Resina(kilos: double)
+    + calcularCostoCombustion(): double
+    + calcularGradoContaminacion(): double
+    + obtenerKilos(): double
+}
+
+class CapacidadMaximaSuperadaException <<exception>>
+class CombustibleInvalidoException <<exception>>
+class ContaminacionMaximaSuperadaException <<exception>>
+
+Salamandra "1" *-- "*" Combustible
+Salamandra ..> Combustion
+
+Combustion "1" *-- "*" Combustible
+
+Combustible <|.. Quebracho
+Combustible <|.. Pino
+Combustible <|.. Resina
+
+Salamandra ..> CapacidadMaximaSuperadaException: <<throws>>
+Salamandra ..> CombustibleInvalidoException: <<throws>>
+Salamandra ..> ContaminacionMaximaSuperadaException: <<throws>>
+
+@enduml

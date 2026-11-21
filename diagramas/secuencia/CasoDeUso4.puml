@@ -1,0 +1,76 @@
+@startuml
+actor Usuario
+participant "salamandra : Salamandra" as S
+participant "q : Quebracho" as Q
+participant "p : Pino" as P
+participant "r : Resina" as R
+participant "c : Combustion" as C
+
+Usuario -> S : rellenarCon(q)
+activate S
+S -> Q : obtenerKilos()
+activate Q
+Q --> S : 5
+deactivate Q
+S --> Usuario : true
+deactivate S
+
+Usuario -> S : rellenarCon(p)
+activate S
+S -> P : obtenerKilos()
+activate P
+P --> S : 1
+deactivate P
+S --> Usuario : true
+deactivate S
+
+Usuario -> S : rellenarCon(r)
+activate S
+S -> R : obtenerKilos()
+activate R
+R --> S : 1
+deactivate R
+S --> Usuario : true
+deactivate S
+
+Usuario -> S : quemar()
+activate S
+create C
+S -> C : <<create>> Combustion(combustibles)
+S -> C : calcularContaminacion()
+activate C
+C -> Q : calcularGradoContaminacion()
+activate Q
+Q --> C : 25
+deactivate Q
+C -> P : calcularGradoContaminacion()
+activate P
+P --> C : 150
+deactivate P
+C -> R : calcularGradoContaminacion()
+activate R
+R --> C : 5
+deactivate R
+C --> S : 180
+deactivate C
+note right of S : 180 <= 500 (válido)
+S --> Usuario : c
+deactivate S
+
+Usuario -> C : calcularContaminacion()
+activate C
+C -> Q : calcularGradoContaminacion()
+activate Q
+Q --> C : 25
+deactivate Q
+C -> P : calcularGradoContaminacion()
+activate P
+P --> C : 150
+deactivate P
+C -> R : calcularGradoContaminacion()
+activate R
+R --> C : 5
+deactivate R
+C --> Usuario : 180
+deactivate C
+@enduml

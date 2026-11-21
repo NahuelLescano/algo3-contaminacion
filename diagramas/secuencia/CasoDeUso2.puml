@@ -1,0 +1,28 @@
+@startuml
+actor Usuario
+participant "salamandra : Salamandra" as S
+participant "q : Quebracho" as Q
+participant "p : Pino" as P
+
+Usuario -> S : rellenarCon(q)
+activate S
+S -> Q : obtenerKilos()
+activate Q
+Q --> S : 6
+deactivate Q
+note right of S : 6 <= 10 (se agrega)
+S --> Usuario : true
+deactivate S
+
+Usuario -> S : rellenarCon(p)
+activate S
+S -> P : obtenerKilos()
+activate P
+P --> S : 5
+deactivate P
+note right of S : 6 + 5 = 11 > 10 (supera CAPACIDAD_MAX)
+create participant "e : CapacidadMaximaSuperadaException" as E
+S -> E : <<create>>
+S --> Usuario : <<throws>> e
+deactivate S
+@enduml
